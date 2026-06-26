@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trang web đơn giản</title>
+  <style>
+    :root {
+      --bg: #f7f4ef;
+      --text: #1f2933;
+      --muted: #5f6b76;
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --accent: #d97706;
+      --surface: #ffffff;
+      --line: #e2ddd4;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .nav {
+      width: min(1120px, calc(100% - 32px));
+      min-height: 72px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      font-weight: 700;
+      color: var(--primary-dark);
+      letter-spacing: 0;
+    }
+
+    nav {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
+      gap: 48px;
+      align-items: center;
+      padding: 72px 0 56px;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      font-size: clamp(38px, 7vw, 68px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 620px;
+      margin: 0 0 28px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border: 1px solid var(--primary);
+      border-radius: 8px;
+      color: var(--primary-dark);
+      background: transparent;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .button.primary {
+      color: white;
+      background: var(--primary);
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .visual {
+      min-height: 360px;
+      border-radius: 8px;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(15, 118, 110, 0.9), rgba(15, 23, 42, 0.88)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 900'%3E%3Crect width='900' height='900' fill='%23f9fafb'/%3E%3Cg fill='none' stroke='%230f766e' stroke-width='22' opacity='.48'%3E%3Cpath d='M65 190c130-88 238-94 324-18s200 76 342 0'/%3E%3Cpath d='M90 418c96-74 200-85 312-33s219 52 321 0'/%3E%3Cpath d='M96 654c120-72 232-76 336-13s216 64 336 4'/%3E%3C/g%3E%3Cg fill='%23d97706' opacity='.72'%3E%3Ccircle cx='222' cy='282' r='54'/%3E%3Ccircle cx='682' cy='542' r='70'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 22px 60px rgba(31, 41, 51, 0.16);
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      padding: 16px 0 72px;
+    }
+
+    .feature {
+      min-height: 160px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .feature h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 24px 16px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    @media (max-width: 760px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: center;
+        padding: 14px 0;
+      }
+
+      nav {
+        justify-content: flex-start;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding-top: 48px;
+      }
+
+      .visual {
+        min-height: 260px;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="brand">Website Mẫu</div>
+      <nav aria-label="Điều hướng chính">
+        <a href="#gioi-thieu">Giới thiệu</a>
+        <a href="#diem-noi-bat">Điểm nổi bật</a>
+        <a href="#lien-he">Liên hệ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="gioi-thieu">
+      <div>
+        <h1>Xin chào, đây là trang web của bạn.</h1>
+        <p class="lead">
+          Một trang HTML đơn giản, gọn gàng và responsive. Bạn có thể thay đổi
+          tiêu đề, nội dung, màu sắc hoặc liên kết để phù hợp với mục đích của mình.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="#diem-noi-bat">Xem nội dung</a>
+          <a class="button" href="mailto:hello@example.com">Gửi email</a>
+        </div>
+      </div>
+      <div class="visual" role="img" aria-label="Hình minh họa trang web đơn giản"></div>
+    </section>
+
+    <section class="features" id="diem-noi-bat" aria-label="Điểm nổi bật">
+      <article class="feature">
+        <h2>Dễ chỉnh sửa</h2>
+        <p>Toàn bộ nội dung nằm trong một file HTML duy nhất.</p>
+      </article>
+      <article class="feature">
+        <h2>Hiển thị tốt</h2>
+        <p>Bố cục tự điều chỉnh cho màn hình máy tính và điện thoại.</p>
+      </article>
+      <article class="feature">
+        <h2>Sẵn sàng dùng</h2>
+        <p>Chỉ cần mở file bằng trình duyệt là có thể xem trang ngay.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer id="lien-he">
+    © 2026 Website Mẫu. Cảm ơn bạn đã ghé thăm.
+  </footer>
+</body>
+</html>
