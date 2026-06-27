@@ -1,6 +1,6 @@
 export type Role = "tenant" | "owner" | "manager";
 
-export type RoomStatus = "available" | "pending" | "booked";
+export type RoomStatus = "available" | "pending" | "booked" | "scheduled" | "reserved";
 
 export type UserProfile = {
   id: number;
@@ -32,6 +32,10 @@ export type Room = {
   availableFrom: string;
   latitude: number;
   longitude: number;
+  features?: string[];
+  depositPrice?: number;
+  isDeposited?: boolean;
+  images?: RoomImage[];
 };
 
 export type RoomImage = {
