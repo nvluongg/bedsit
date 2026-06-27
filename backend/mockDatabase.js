@@ -75,7 +75,10 @@ export const rooms = [
     highlight: "Phù hợp sinh viên hoặc người mới đi làm cần khu an toàn.",
     availableFrom: "2026-07-01",
     latitude: 21.0364,
-    longitude: 105.7827
+    longitude: 105.7827,
+    features: ["giường", "tủ đồ", "bếp nhỏ", "máy lạnh"],
+    depositPrice: 3800000,
+    isDeposited: false
   },
   {
     id: 102,
@@ -96,7 +99,10 @@ export const rooms = [
     highlight: "Gần trung tâm, hợp người đi làm cần không gian riêng.",
     availableFrom: "2026-07-05",
     latitude: 10.8037,
-    longitude: 106.7149
+    longitude: 106.7149,
+    features: ["ban công", "thang máy", "tủ lạnh"],
+    depositPrice: 5200000,
+    isDeposited: false
   },
   {
     id: 103,
@@ -117,7 +123,10 @@ export const rooms = [
     highlight: "Giá mềm, dễ đi học và đi làm quanh khu Cầu Giấy.",
     availableFrom: "2026-07-12",
     latitude: 21.0478,
-    longitude: 105.7925
+    longitude: 105.7925,
+    features: ["wifi", "gửi xe"],
+    depositPrice: 2900000,
+    isDeposited: false
   },
   {
     id: 104,
@@ -138,7 +147,10 @@ export const rooms = [
     highlight: "Dễ ra sân bay, khu dân cư yên tĩnh, chi phí rõ ràng.",
     availableFrom: "2026-07-03",
     latitude: 10.8128,
-    longitude: 106.6641
+    longitude: 106.6641,
+    features: ["cửa sổ lớn", "máy lạnh", "camera"],
+    depositPrice: 4600000,
+    isDeposited: false
   },
   {
     id: 105,
@@ -159,7 +171,10 @@ export const rooms = [
     highlight: "Không gian rộng hơn, phù hợp cặp đôi hoặc người làm hybrid.",
     availableFrom: "2026-08-01",
     latitude: 10.8012,
-    longitude: 106.7204
+    longitude: 106.7204,
+    features: ["gác lửng", "máy lạnh", "tủ lạnh"],
+    depositPrice: 12800000,
+    isDeposited: true
   },
   {
     id: 106,
@@ -180,7 +195,10 @@ export const rooms = [
     highlight: "Gần văn phòng, phù hợp người đi làm cần di chuyển nhanh.",
     availableFrom: "2026-07-09",
     latitude: 21.0297,
-    longitude: 105.7831
+    longitude: 105.7831,
+    features: ["cửa sổ lớn", "máy giặt", "khóa vân tay"],
+    depositPrice: 4300000,
+    isDeposited: false
   },
   {
     id: 107,
@@ -201,7 +219,10 @@ export const rooms = [
     highlight: "Chi phí vừa phải, tiện đi làm khu sân bay và Etown.",
     availableFrom: "2026-07-15",
     latitude: 10.8019,
-    longitude: 106.6461
+    longitude: 106.6461,
+    features: ["gác lửng", "wifi", "camera"],
+    depositPrice: 3900000,
+    isDeposited: false
   }
 ];
 

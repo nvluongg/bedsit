@@ -13,7 +13,11 @@ app.get("/api/status", (req, res) => {
 });
 
 app.get("/api/rooms", (req, res) => {
-  res.json(mockDatabase.rooms);
+  const includeReserved = req.query.includeReserved === "true";
+  if (includeReserved) return res.json(mockDatabase.rooms);
+  // filter out deposited/reserved rooms for public listing
+  const visible = mockDatabase.rooms.filter((r) => !r.isDeposited);
+  res.json(visible);
 });
 
 app.get("/api/rooms/:id", (req, res) => {
@@ -22,7 +26,59 @@ app.get("/api/rooms/:id", (req, res) => {
   if (!room) {
     return res.status(404).json({ error: "Không tìm thấy phòng." });
   }
-  res.json(room);
+  const includeReserved = req.query.includeReserved === "true";
+  if (room.isDeposited && !includeReserved) {
+    return res.status(404).json({ error: "Không tìm thấy phòng." });
+  }
+  // attach images from roomImages if present
+  const images = (mockDatabase.roomImages || []).filter((img) => img.roomId === roomId);
+  res.json({ ...room, images });
+});
+
+app.post("/api/rooms/:id/schedule", (req, res) => {
+  const roomId = Number(req.params.id);
+  const { tenantId, scheduleAt, note } = req.body;
+  const room = mockDatabase.rooms.find((r) => r.id === roomId);
+  if (!room || room.isDeposited) return res.status(404).json({ error: "Phòng không khả dụng." });
+  const nextId = (mockDatabase.bookings[mockDatabase.bookings.length - 1]?.id || 500) + 1;
+  const booking = {
+    id: nextId,
+    roomId,
+    tenantId: tenantId || null,
+    ownerId: room.ownerId,
+    scheduleAt,
+    status: "pending",
+    note: note || ""
+  };
+  mockDatabase.bookings.push(booking);
+  // set room status to scheduled
+  room.status = "scheduled";
+  res.json({ booking, room });
+});
+
+app.post("/api/rooms/:id/deposit", (req, res) => {
+  const roomId = Number(req.params.id);
+  const { tenantId, amount } = req.body;
+  const room = mockDatabase.rooms.find((r) => r.id === roomId);
+  if (!room) return res.status(404).json({ error: "Không tìm thấy phòng." });
+  if (room.isDeposited) return res.status(409).json({ error: "Phòng đã bị đặt cọc." });
+  // simple deposit logic
+  room.isDeposited = true;
+  room.status = "reserved";
+  const contractId = (mockDatabase.contracts[mockDatabase.contracts.length - 1]?.id || 800) + 1;
+  const contract = {
+    id: contractId,
+    roomId: room.id,
+    tenantId: tenantId || null,
+    ownerId: room.ownerId,
+    signedAt: new Date().toISOString().slice(0, 10),
+    monthlyRent: room.price,
+    deposit: amount || room.depositPrice || room.price * (room.depositMonths || 1),
+    status: "draft",
+    ledgerStatus: "pending"
+  };
+  mockDatabase.contracts.push(contract);
+  res.json({ room, contract });
 });
 
 app.get("/api/bookings", (req, res) => {

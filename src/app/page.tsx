@@ -7,6 +7,7 @@ import { ChatAssistant } from "@/components/ChatAssistant";
 import { DatabasePreview } from "@/components/DatabasePreview";
 import { RoleWorkspace } from "@/components/RoleWorkspace";
 import { RoomCard } from "@/components/RoomCard";
+import RoomDetail from "@/components/RoomDetail";
 import { formatCurrency } from "@/lib/data";
 import type { ListingDraft, Role, Room } from "@/types/domain";
 
@@ -204,6 +205,20 @@ export default function HomePage() {
               injectedQuestion={aiQuestion}
               onQuestionConsumed={() => setAiQuestion("")}
             />
+
+            {selectedRoom ? (
+              <RoomDetail
+                roomId={selectedRoom.id}
+                onClose={() => setSelectedRoom(null)}
+                onUpdated={(r) => {
+                  // refresh rooms list to reflect status/availability changes
+                  fetch(`${API_BASE_URL}/api/rooms`)
+                    .then((res) => res.json())
+                    .then((data) => setRooms(data))
+                    .catch(() => {});
+                }}
+              />
+            ) : null}
           </div>
         </div>
       </section>
