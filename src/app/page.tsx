@@ -1,22 +1,53 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { ArrowDown, Bot, CalendarCheck, CheckCircle2, Home, MapPinned, Search, ShieldCheck, TicketPercent } from "lucide-react";
 import { ChatAssistant } from "@/components/ChatAssistant";
 import { DatabasePreview } from "@/components/DatabasePreview";
 import { RoleWorkspace } from "@/components/RoleWorkspace";
 import { RoomCard } from "@/components/RoomCard";
-import { formatCurrency, rooms } from "@/lib/data";
+import { formatCurrency } from "@/lib/data";
 import type { ListingDraft, Role, Room } from "@/types/domain";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
 
 export default function HomePage() {
   const [role, setRole] = useState<Role>("tenant");
   const [district, setDistrict] = useState("Tất cả");
   const [budget, setBudget] = useState(4500000);
-  const [selectedRoom, setSelectedRoom] = useState<Room | null>(rooms[0]);
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [drafts, setDrafts] = useState<ListingDraft[]>([]);
   const [aiQuestion, setAiQuestion] = useState("");
+  const [fetchError, setFetchError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    setFetchError(null);
+
+    fetch(`${API_BASE_URL}/api/rooms`)
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`Không tải được danh sách phòng: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data: Room[]) => {
+        if (!isMounted) return;
+        setRooms(data);
+        setSelectedRoom((current) => current ?? (data.length > 0 ? data[0] : null));
+      })
+      .catch((error) => {
+        console.error(error);
+        if (!isMounted) return;
+        setFetchError("Không lấy được dữ liệu phòng từ backend. Hãy kiểm tra backend đang chạy.");
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const filteredRooms = useMemo(
     () =>
@@ -25,10 +56,10 @@ export default function HomePage() {
         const matchBudget = room.price <= budget;
         return matchDistrict && matchBudget;
       }),
-    [district, budget]
+    [district, budget, rooms]
   );
 
-  const districts = useMemo(() => ["Tất cả", ...Array.from(new Set(rooms.map((room) => room.district)))], []);
+  const districts = useMemo(() => ["Tất cả", ...Array.from(new Set(rooms.map((room) => room.district)))], [rooms]);
 
   function handleAskAi(room: Room) {
     setSelectedRoom(room);
@@ -149,6 +180,9 @@ export default function HomePage() {
           </div>
 
           <div className="results-layout" id="ket-qua">
+            {fetchError ? (
+              <div className="fetch-error">{fetchError}</div>
+            ) : null}
             <div className="room-list">
               {filteredRooms.length === 0 ? (
                 <p className="empty-state">Chưa có phòng mẫu phù hợp với bộ lọc hiện tại.</p>

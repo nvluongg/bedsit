@@ -30,6 +30,7 @@ type OpenAIResponseBody = {
 
 const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 const DEFAULT_MODEL = "gpt-4.1-mini";
+const BACKEND_API_URL = process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_BASE_URL;
 
 function isValidContext(context: unknown): context is ChatContext {
   if (!context || typeof context !== "object") return false;
@@ -107,6 +108,30 @@ export async function POST(request: Request) {
   const fallbackAnswer = askLocalCoach(question, context);
   const apiKey = process.env.OPENAI_API_KEY;
   const model = process.env.OPENAI_MODEL || DEFAULT_MODEL;
+
+  if (BACKEND_API_URL) {
+    try {
+      const response = await fetch(`${BACKEND_API_URL}/api/chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ question, context })
+      });
+
+      if (response.ok) {
+        const backendData = await response.json();
+        return NextResponse.json({
+          answer: backendData.answer || fallbackAnswer,
+          mode: backendData.mode || "backend",
+          model: backendData.model ?? null,
+          error: backendData.error
+        });
+      }
+    } catch (error) {
+      console.error("Backend chat proxy failed:", error);
+    }
+  }
 
   if (!apiKey) {
     return NextResponse.json({

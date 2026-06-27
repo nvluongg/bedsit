@@ -51,7 +51,33 @@ Nếu muốn build kiểm tra bản production:
 pnpm build
 pnpm start
 ```
+### Chạy backend mới
 
+Backend được đặt trong thư mục `backend/` và chạy trên port `4000`.
+
+```bash
+cd backend
+npm install
+npm start
+```
+
+Khi backend đã chạy, frontend sẽ lấy dữ liệu phòng từ:
+
+```txt
+http://localhost:4000/api/rooms
+```
+
+Nếu muốn chạy đồng thời frontend và backend, mở hai terminal:
+
+```bash
+cd backend
+npm start
+```
+
+```bash
+cd c:\uet\test
+npm run dev
+```
 ## File quan trọng
 
 ```txt
