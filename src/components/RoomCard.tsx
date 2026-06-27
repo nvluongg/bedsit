@@ -13,7 +13,15 @@ type RoomCardProps = {
 
 export function RoomCard({ room, selected, onSelect, onAskAi }: RoomCardProps) {
   return (
-    <article className={selected ? "room-card selected" : "room-card"}>
+    <article
+      className={selected ? "room-card selected" : "room-card"}
+      role="button"
+      tabIndex={0}
+      onClick={() => onSelect(room)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") onSelect(room);
+      }}
+    >
       <div className="room-card-top">
         <span className="status-pill">{statusLabels[room.status]}</span>
         <span className="rating">
